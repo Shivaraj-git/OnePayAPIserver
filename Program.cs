@@ -14,6 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFlutter",
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,7 +38,7 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowFlutter");
 app.UseAuthorization();
 
 app.MapControllers();
