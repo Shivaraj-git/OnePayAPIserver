@@ -19,15 +19,11 @@ public partial class ShivaDbContext : DbContext
 
     public virtual DbSet<MerchantBankAccount> MerchantBankAccounts { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=KASSAPOS35;Database=shiva_db;Trusted_Connection=True;TrustServerCertificate=True");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Merchant>(entity =>
         {
-            entity.HasKey(e => e.MerchantId).HasName("PK__Merchant__044165433031832C");
+            entity.HasKey(e => e.MerchantId);
 
             entity.Property(e => e.BusinessName).HasMaxLength(150);
             entity.Property(e => e.CreatedDate)
@@ -42,7 +38,7 @@ public partial class ShivaDbContext : DbContext
 
         modelBuilder.Entity<MerchantBankAccount>(entity =>
         {
-            entity.HasKey(e => e.BankId).HasName("PK__Merchant__AA08CB1339BCCEF7");
+            entity.HasKey(e => e.BankId);
 
             entity.Property(e => e.AccountHolderName).HasMaxLength(100);
             entity.Property(e => e.AccountNumber).HasMaxLength(50);
@@ -52,10 +48,10 @@ public partial class ShivaDbContext : DbContext
                 .HasColumnName("IFSCCode");
             entity.Property(e => e.IsVerified).HasDefaultValue(false);
 
-            entity.HasOne(d => d.Merchant).WithMany(p => p.MerchantBankAccounts)
+            entity.HasOne(d => d.Merchant)
+                 .WithMany(p => p.MerchantBankAccounts)
                 .HasForeignKey(d => d.MerchantId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MerchantBankAccounts_Merchants");
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         OnModelCreatingPartial(modelBuilder);
