@@ -29,7 +29,7 @@ namespace OnePayAPI.Controllers
             if (loginDTO == null) return BadRequest(new { success = false, message = "Invalid request" });
             var merchant = _signLogServices.Login(loginDTO.LoginInput, loginDTO.Password);
             if (merchant == null) return BadRequest(new { success = false, message = "Invalid credentials" });//400
-            return Ok(new { success = true, message = "Login successful" });//200
+            return Ok(new { success = true, message = "Login successful", id=merchant.MerchantId });//200
         }
     }
 }
