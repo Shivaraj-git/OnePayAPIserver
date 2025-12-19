@@ -1,5 +1,7 @@
-﻿using OnePayAPI.IServices;
+﻿using Microsoft.EntityFrameworkCore;
+using OnePayAPI.IServices;
 using OnePayAPI.Models;
+using OnePayAPI.Models.DTOs;
 
 namespace OnePayAPI.Services
 {
@@ -28,6 +30,24 @@ namespace OnePayAPI.Services
             _context.MerchantBankAccounts.Add(merchBankAccount);
             _context.SaveChanges();
             return merchBankAccount;
+        }
+
+        public List<BankAccountDTO> GetBankAcountDTOs(int id)
+        {
+            List<BankAccountDTO> accounts= new List<BankAccountDTO>();
+            foreach (var item in _context.MerchantBankAccounts)
+            {
+                if (item.MerchantId == id)
+                {
+                    accounts.Add(new BankAccountDTO
+                    {
+                        AccountHolderName = item.AccountHolderName,
+                        BankName = item.BankName,
+                        IsVerified = item.IsVerified
+                    });
+                }
+            }
+            return accounts;
         }
     }
 }

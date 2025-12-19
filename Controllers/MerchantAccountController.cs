@@ -23,5 +23,13 @@ namespace OnePayAPI.Controllers
             if (accnt == null) return BadRequest("Merchant Not Found");//400
             return Ok("Account Created Successfully");//200
         }
+        [HttpGet]
+        public IActionResult GetMerchantBankAccounts([FromQuery] int id)
+        {
+            if (id == null) return BadRequest("Invalid Request");
+            List<BankAccountDTO> accounts = _merchantAccountService.GetBankAcountDTOs(id);
+            if (accounts.Count == 0 || accounts == null) return NotFound("Account Details Not Found");
+            return Ok(accounts);
+        }
     }
 }
