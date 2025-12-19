@@ -10,6 +10,7 @@ builder.Services.AddDbContext<ShivaDbContext>(options => options.UseSqlServer(bu
 
 builder.Services.AddScoped<IMerchantAccountService, MerchantAccountService>();
 builder.Services.AddScoped<ISignLogServices, SignLogServices>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 
 builder.Services.AddControllers();
